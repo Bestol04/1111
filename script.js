@@ -1,8 +1,10 @@
+// ===== Telegram WebApp: развернуть на весь экран =====
 const tg = window.Telegram?.WebApp;
 if (tg) {
-    tg.ready();
-    tg.expand();  // это развернёт MiniApp на весь экран
+    tg.ready();   // обязательно
+    tg.expand();  // развернуть WebApp на весь экран
 }
+
 // ===== ЭЛЕМЕНТЫ =====
 const loading = document.querySelector('.loading');
 const app = document.querySelector('.app');
@@ -11,40 +13,48 @@ const counterEl = document.getElementById("counter");
 
 let count = 0;
 
-// Telegram WebApp
-const tg = window.Telegram?.WebApp;
-
 // ===== ЗАГРУЗОЧНЫЙ ЭКРАН =====
 function hideLoading() {
   loading.classList.add('hide');
   setTimeout(() => {
     loading.style.display = 'none';
     app.classList.remove('hidden');
+
+    // Плавное появление планеты
+    btn.style.opacity = 0;
+    btn.style.transform = "scale(0.8)";
+    btn.style.transition = "all 0.5s ease-out";
+    requestAnimationFrame(() => {
+      btn.style.opacity = 1;
+      btn.style.transform = "scale(1)";
+    });
   }, 500);
 }
 
 setTimeout(hideLoading, 1500);
 
-// ===== КЛИК ПО ПЛАНЕТЕ =====
-btn.addEventListener("click", (e) => {
-  // +1
+// ===== КЛИК / ТАЧ =====
+function handleTap(e) {
+  e.preventDefault(); // блокируем масштаб и выделение
+  const touch = e.touches ? e.touches[0] : e;
+
   count++;
   counterEl.textContent = count;
 
-  // Эффект удара
   btn.classList.remove("hit");
-  void btn.offsetWidth; // перезапуск анимации
+  void btn.offsetWidth;
   btn.classList.add("hit");
 
-  // Вибрация (Telegram)
   if (tg?.HapticFeedback?.impactOccurred) {
     tg.HapticFeedback.impactOccurred("light");
   }
 
-  // Эффекты
-  createParticles(e.clientX, e.clientY);
-  createPlusOne(e.clientX, e.clientY);
-});
+  createParticles(touch.clientX, touch.clientY);
+  createPlusOne(touch.clientX, touch.clientY);
+}
+
+btn.addEventListener("click", handleTap);
+btn.addEventListener("touchstart", handleTap, { passive: false });
 
 // ===== ЧАСТИЦЫ =====
 function createParticles(x, y) {
@@ -77,7 +87,7 @@ function createParticles(x, y) {
   }
 }
 
-// ===== ВСПЛЫВАЮЩИЙ +1 =====
+// ===== +1 =====
 function createPlusOne(x, y) {
   const plus = document.createElement("div");
   plus.textContent = "+1";
@@ -106,3 +116,8 @@ function createPlusOne(x, y) {
   setTimeout(() => plus.remove(), 800);
 }
 
+// ===== Блокировка зума на мобильных =====
+document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('gesturechange', e => e.preventDefault());
+document.addEventListener('gestureend', e => e.preventDefault());
+document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
