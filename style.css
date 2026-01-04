@@ -1,3 +1,21 @@
+/* Сброс стилей */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: url("picture/background.jpg") center / cover no-repeat;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* Загрузочный экран */
 .loading {
   position: fixed;
   inset: 0;
@@ -8,12 +26,26 @@
   align-items: center;
   gap: 20px;
   z-index: 999;
+  transition: opacity 0.5s;
 }
+
+.loading.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .logo {
   color: white;
   font-size: 32px;
   letter-spacing: 4px;
 }
+
+.logo-img {
+  width: 700px; /* размер задаётся через CSS */
+  height: auto;
+}
+
+/* Лоадер */
 .loader {
   width: 40px;
   height: 40px;
@@ -22,17 +54,92 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Основное приложение */
 .hidden {
   display: none;
 }
-.loading {
-  transition: opacity 0.5s;
+
+.scene {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.loading.hide {
-  opacity: 0;
+/* Счётчик */
+.counter {
+  position: absolute;
+  top: 40px;
+  font-size: 42px;
+  color: #ffdca8;
+  text-shadow: 0 0 20px rgba(255,200,120,0.8);
+  user-select: none;
+}
+
+/* Планета-кнопка */
+.planet-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  position: relative;
+  animation: pulse 3s infinite ease-in-out;
+  box-shadow:
+    0 0 30px rgba(255,180,90,0.4),
+    0 0 90px rgba(255,140,50,0.25);
+  transition:
+    transform 0.1s ease,
+    filter 0.1s ease,
+    box-shadow 0.15s ease;
+}
+
+.planet-button img {
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  display: block;
   pointer-events: none;
+}
+
+/* Пульсация кнопки */
+@keyframes pulse {
+  0% {
+    box-shadow:
+      0 0 25px rgba(255,180,90,0.4),
+      0 0 80px rgba(255,140,50,0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 45px rgba(255,220,140,0.7),
+      0 0 140px rgba(255,180,90,0.5);
+  }
+  100% {
+    box-shadow:
+      0 0 25px rgba(255,180,90,0.4),
+      0 0 80px rgba(255,140,50,0.25);
+  }
+}
+
+/* Нажатие кнопки */
+.planet-button:active {
+  transform: scale(0.92);
+  filter: brightness(1.3);
+}
+
+/* Частицы */
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #ffdca8;
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 10px #ffdca8;
 }
