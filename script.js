@@ -1,3 +1,8 @@
+const tg = window.Telegram?.WebApp;
+if (tg) {
+    tg.ready();
+    tg.expand();  // это развернёт MiniApp на весь экран
+}
 // ===== ЭЛЕМЕНТЫ =====
 const loading = document.querySelector('.loading');
 const app = document.querySelector('.app');
@@ -100,3 +105,4 @@ function createPlusOne(x, y) {
 
   setTimeout(() => plus.remove(), 800);
 }
+
