@@ -9,15 +9,25 @@
 </head>
 <body>
 
+  <!-- Загрузочный экран -->
   <div class="loading">
-    <div class="logo"><img width="700px" src="picture/plamt.png" alt="Cosmonyx"></div>
+    <div class="logo">
+      <img src="picture/plamt.png" alt="Cosmonyx" class="logo-img">
+    </div>
     <div class="loader"></div>
   </div>
 
+  <!-- Основное приложение -->
   <div class="app hidden">
-    <!-- тут будет игра -->
+    <div class="scene">
+      <div class="counter" id="counter">0</div>
+
+      <button class="planet-button" id="planetBtn">
+        <img src="picture/planet.png" alt="Planet">
+      </button>
+    </div>
   </div>
 
+  <script src="script.js"></script>
 </body>
-
 </html>
