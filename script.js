@@ -26,7 +26,7 @@ function hideLoading() {
     });
   }, 500);
 }
-setTimeout(hideLoading, 1500);
+setTimeout(hideLoading, 3000);
 
 // ===== АУДИО =====
 let bgMusic; // аудио создаётся динамически
@@ -136,3 +136,4 @@ document.addEventListener('gesturestart', e => e.preventDefault());
 document.addEventListener('gesturechange', e => e.preventDefault());
 document.addEventListener('gestureend', e => e.preventDefault());
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
