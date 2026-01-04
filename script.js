@@ -9,7 +9,6 @@ let count = 0;
 // Telegram WebApp
 const tg = window.Telegram?.WebApp;
 
-
 // ===== ЗАГРУЗКА =====
 function hideLoading() {
   loading.classList.add('hide'); // плавное исчезновение
@@ -27,30 +26,27 @@ function hideLoading() {
     });
   }, 500);
 }
-
 setTimeout(hideLoading, 1500);
-const bgMusic = document.getElementById("bgMusic");
-bgMusic.volume = 0.05;
 
-// Функция запуска музыки (после первого клика)
-function playMusic() {
-    bgMusic.play().catch(() => {
-        console.log("Пользователь ещё не взаимодействовал с WebApp, музыка не играет");
-    });
-}
+// ===== АУДИО =====
+let bgMusic; // аудио создаётся динамически
 
-// Запускаем при первом клике по планете
-btn.addEventListener("click", () => {
-    const bgMusic = document.getElementById("bgMusic");
-    bgMusic.volume = 0.3;
+function playMusicOnce() {
+  if (!bgMusic) {
+    bgMusic = new Audio("music/bg.mp3"); // путь к файлу
+    bgMusic.loop = true;
+    bgMusic.volume = 0.05; // низкая громкость
     bgMusic.play().catch(() => console.log("Тапните для воспроизведения музыки"));
-}, { once: true });
-
+  }
+}
 
 // ===== КЛИК / ТАЧ =====
 function handleTap(e) {
   e.preventDefault(); // блокируем масштаб и выделение
   const touch = e.touches ? e.touches[0] : e;
+
+  // Запускаем музыку только при первом клике
+  playMusicOnce();
 
   // +1
   count++;
