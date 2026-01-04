@@ -1,123 +1,107 @@
-// ===== Telegram WebApp: развернуть на весь экран =====
-const tg = window.Telegram?.WebApp;
-if (tg) {
-    tg.ready();   // обязательно
-    tg.expand();  // развернуть WebApp на весь экран
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const loading = document.querySelector('.loading');
+    const app = document.querySelector('.app');
+    const btn = document.getElementById("planetBtn");
+    const counterEl = document.getElementById("counter");
+    let count = 0;
 
-// ===== ЭЛЕМЕНТЫ =====
-const loading = document.querySelector('.loading');
-const app = document.querySelector('.app');
-const btn = document.getElementById("planetBtn");
-const counterEl = document.getElementById("counter");
-
-let count = 0;
-
-// ===== ЗАГРУЗОЧНЫЙ ЭКРАН =====
-function hideLoading() {
-  loading.classList.add('hide');
-  setTimeout(() => {
-    loading.style.display = 'none';
-    app.classList.remove('hidden');
-
-    // Плавное появление планеты
-    btn.style.opacity = 0;
-    btn.style.transform = "scale(0.8)";
-    btn.style.transition = "all 0.5s ease-out";
-    requestAnimationFrame(() => {
-      btn.style.opacity = 1;
-      btn.style.transform = "scale(1)";
-    });
-  }, 500);
-}
-
-setTimeout(hideLoading, 1500);
-
-// ===== КЛИК / ТАЧ =====
-function handleTap(e) {
-  e.preventDefault(); // блокируем масштаб и выделение
-  const touch = e.touches ? e.touches[0] : e;
-
-  count++;
-  counterEl.textContent = count;
-
-  btn.classList.remove("hit");
-  void btn.offsetWidth;
-  btn.classList.add("hit");
-
-  if (tg?.HapticFeedback?.impactOccurred) {
-    tg.HapticFeedback.impactOccurred("light");
-  }
-
-  createParticles(touch.clientX, touch.clientY);
-  createPlusOne(touch.clientX, touch.clientY);
-}
-
-btn.addEventListener("click", handleTap);
-btn.addEventListener("touchstart", handleTap, { passive: false });
-
-// ===== ЧАСТИЦЫ =====
-function createParticles(x, y) {
-  for (let i = 0; i < 10; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    document.body.appendChild(p);
-
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 40 + Math.random() * 40;
-
-    p.style.left = x + "px";
-    p.style.top = y + "px";
-
-    const dx = Math.cos(angle) * distance;
-    const dy = Math.sin(angle) * distance;
-
-    p.animate(
-      [
-        { transform: "translate(0,0)", opacity: 1 },
-        { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
-      ],
-      {
-        duration: 600,
-        easing: "ease-out"
-      }
-    );
-
-    setTimeout(() => p.remove(), 600);
-  }
-}
-
-// ===== +1 =====
-function createPlusOne(x, y) {
-  const plus = document.createElement("div");
-  plus.textContent = "+1";
-  plus.style.position = "absolute";
-  plus.style.left = x + "px";
-  plus.style.top = y + "px";
-  plus.style.color = "#ffdca8";
-  plus.style.fontSize = "24px";
-  plus.style.fontWeight = "bold";
-  plus.style.pointerEvents = "none";
-  plus.style.textShadow = "0 0 10px rgba(255,220,150,0.8)";
-
-  document.body.appendChild(plus);
-
-  plus.animate(
-    [
-      { transform: "translateY(0)", opacity: 1 },
-      { transform: "translateY(-40px)", opacity: 0 }
-    ],
-    {
-      duration: 800,
-      easing: "ease-out"
+    // Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+        tg.ready();
+        tg.expand();
     }
-  );
 
-  setTimeout(() => plus.remove(), 800);
-}
+    // Прячем загрузку через 1.5 сек
+    setTimeout(() => {
+        loading.classList.add('hide');
+        setTimeout(() => {
+            loading.style.display = 'none';
+            app.classList.remove('hidden');
 
-// ===== Блокировка зума на мобильных =====
-document.addEventListener('gesturestart', e => e.preventDefault());
-document.addEventListener('gesturechange', e => e.preventDefault());
-document.addEventListener('gestureend', e => e.preventDefault());
-document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+            // Плавное появление планеты
+            btn.style.opacity = 0;
+            btn.style.transform = "scale(0.8)";
+            btn.style.transition = "all 0.5s ease-out";
+            requestAnimationFrame(() => {
+                btn.style.opacity = 1;
+                btn.style.transform = "scale(1)";
+            });
+        }, 500);
+    }, 1500);
+
+    // Клик / тач по планете
+    function handleTap(e) {
+        e.preventDefault();
+        const touch = e.touches ? e.touches[0] : e;
+
+        count++;
+        counterEl.textContent = count;
+
+        btn.classList.remove("hit");
+        void btn.offsetWidth;
+        btn.classList.add("hit");
+
+        if (tg?.HapticFeedback?.impactOccurred) {
+            tg.HapticFeedback.impactOccurred("light");
+        }
+
+        createParticles(touch.clientX, touch.clientY);
+        createPlusOne(touch.clientX, touch.clientY);
+    }
+
+    btn.addEventListener("click", handleTap);
+    btn.addEventListener("touchstart", handleTap, { passive: false });
+
+    // Частицы
+    function createParticles(x, y) {
+        for (let i = 0; i < 10; i++) {
+            const p = document.createElement("div");
+            p.className = "particle";
+            document.body.appendChild(p);
+
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 40 + Math.random() * 40;
+            const dx = Math.cos(angle) * distance;
+            const dy = Math.sin(angle) * distance;
+
+            p.style.left = x + "px";
+            p.style.top = y + "px";
+
+            p.animate(
+                [{ transform: "translate(0,0)", opacity: 1 }, { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }],
+                { duration: 600, easing: "ease-out" }
+            );
+
+            setTimeout(() => p.remove(), 600);
+        }
+    }
+
+    // +1
+    function createPlusOne(x, y) {
+        const plus = document.createElement("div");
+        plus.textContent = "+1";
+        plus.style.position = "absolute";
+        plus.style.left = x + "px";
+        plus.style.top = y + "px";
+        plus.style.color = "#ffdca8";
+        plus.style.fontSize = "24px";
+        plus.style.fontWeight = "bold";
+        plus.style.pointerEvents = "none";
+        plus.style.textShadow = "0 0 10px rgba(255,220,150,0.8)";
+        document.body.appendChild(plus);
+
+        plus.animate([{ transform: "translateY(0)", opacity: 1 }, { transform: "translateY(-40px)", opacity: 0 }], {
+            duration: 800,
+            easing: "ease-out"
+        });
+
+        setTimeout(() => plus.remove(), 800);
+    }
+
+    // Блокировка зума
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('gesturechange', e => e.preventDefault());
+    document.addEventListener('gestureend', e => e.preventDefault());
+    document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+});
