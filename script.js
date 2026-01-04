@@ -40,7 +40,12 @@ function playMusic() {
 }
 
 // Запускаем при первом клике по планете
-btn.addEventListener("click", playMusic, { once: true });
+btn.addEventListener("click", () => {
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.volume = 0.3;
+    bgMusic.play().catch(() => console.log("Тапните для воспроизведения музыки"));
+}, { once: true });
+
 
 // ===== КЛИК / ТАЧ =====
 function handleTap(e) {
