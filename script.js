@@ -65,6 +65,9 @@ function handleTap(e) {
   // Частицы и +1
   createParticles(touch.clientX, touch.clientY);
   createPlusOne(touch.clientX, touch.clientY);
+  if (count==5){
+    changePlanet("picture/planet1.png")
+  }
 }
 
 // Добавляем и click и touchstart
@@ -136,4 +139,5 @@ document.addEventListener('gesturestart', e => e.preventDefault());
 document.addEventListener('gesturechange', e => e.preventDefault());
 document.addEventListener('gestureend', e => e.preventDefault());
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
 
