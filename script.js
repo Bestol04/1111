@@ -8,6 +8,8 @@ let count = 0;
 
 // Telegram WebApp
 const tg = window.Telegram?.WebApp;
+const planetImg = btn.querySelector("img");
+
 
 // ===== ЗАГРУЗКА =====
 function hideLoading() {
@@ -26,27 +28,34 @@ function hideLoading() {
     });
   }, 500);
 }
-setTimeout(hideLoading, 3000);
 
-// ===== АУДИО =====
-let bgMusic; // аудио создаётся динамически
+setTimeout(hideLoading, 1500);
+const bgMusic = document.getElementById("bgMusic");
+bgMusic.volume = 0.05;
+function changePlanet(newSrc) {
+  planetImg.style.transition = "opacity 0.15s ease, transform 0.15s ease";
+  planetImg.style.opacity = 0;
+  planetImg.style.transform = "scale(0.9)";
 
-function playMusicOnce() {
-  if (!bgMusic) {
-    bgMusic = new Audio("music/bg.mp3"); // путь к файлу
-    bgMusic.loop = true;
-    bgMusic.volume = 0.05; // низкая громкость
-    bgMusic.play().catch(() => console.log("Тапните для воспроизведения музыки"));
-  }
+  setTimeout(() => {
+    planetImg.src = newSrc;
+    planetImg.style.opacity = 1;
+    planetImg.style.transform = "scale(1)";
+  }, 150);
+}
+
+
+// Функция запуска музыки (после первого клика)
+function playMusic() {
+    bgMusic.play().catch(() => {
+        console.log("Пользователь ещё не взаимодействовал с WebApp, музыка не играет");
+    });
 }
 
 // ===== КЛИК / ТАЧ =====
 function handleTap(e) {
   e.preventDefault(); // блокируем масштаб и выделение
   const touch = e.touches ? e.touches[0] : e;
-
-  // Запускаем музыку только при первом клике
-  playMusicOnce();
 
   // +1
   count++;
@@ -65,7 +74,7 @@ function handleTap(e) {
   // Частицы и +1
   createParticles(touch.clientX, touch.clientY);
   createPlusOne(touch.clientX, touch.clientY);
-  if (count==5){
+  if (count==5521){
     changePlanet("picture/planet1.png")
   }
 }
@@ -139,5 +148,3 @@ document.addEventListener('gesturestart', e => e.preventDefault());
 document.addEventListener('gesturechange', e => e.preventDefault());
 document.addEventListener('gestureend', e => e.preventDefault());
 document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
-
-
