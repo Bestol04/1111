@@ -7,8 +7,6 @@
 
 html, body {
   height: 100%;
-  touch-action: none;
-  overscroll-behavior: none;
 }
 
 body {
@@ -84,8 +82,6 @@ body {
   cursor: pointer;
   border-radius: 50%;
   animation: pulse 3s infinite;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .planet-button img {
@@ -108,6 +104,7 @@ body {
   50%  { transform: scale(0.9); }
   100% { transform: scale(1); }
 }
-
-
+.planet-button img {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
 
